@@ -70,14 +70,14 @@ def main():
                                                 "gcp-starter", "resumeanalyser", embeddings, st.session_state["unique_id_tab1"], docs)
                 # st.write(relevant_docs)
 
-                for doc in relevant_docs:
-                    content = doc[0]
-                    score = doc[1]
-                    score = score * 100
-                    with st.expander("Show Score:-", expanded=True):
-                        st.info("**match score** :" + str(score)+"%")
-                        summary = get_summary(doc[0])
-                        st.write(summary)
+                    for doc in relevant_docs:
+                        content = doc[0]
+                        score = doc[1]
+                        score = score * 100
+                        with st.expander("Show Score:-", expanded=True):
+                            st.info("**match score** :" + str(score)+"%")
+                            summary = get_summary(doc[0])
+                            st.write(summary)
 
             st.success("Hope it was helpful.")
 
