@@ -56,23 +56,28 @@ def main():
         # Use the session state variable for the first tab
         docs, embeddings = docembed(uploaded_files=uploaded_files, tab_key="tab1")
 
-        submit_btn_results = st.button("Start analyzing")  
+        submit_btn_results = st.button("Start analyzing") 
+
+        vectordb_count = null_vector("56ea0e97-0ca4-4db7-b74c-4e60dd726bf5", "gcp-starter", "resumeanalyser") 
         
         if submit_btn_results:
             with st.spinner("Wait It's in progress........"):
-                st.session_state["unique_id_tab1"] = uuid.uuid4().hex
-                relevant_docs = similar_doc(job_description, document_count, "56ea0e97-0ca4-4db7-b74c-4e60dd726bf5",
-                                            "gcp-starter", "resumeanalyser", embeddings, st.session_state["unique_id_tab1"], docs)
+                if vectordb_count == 0:
+                    st.warning("No Resumes in DB 🚨")
+                else:    
+                    st.session_state["unique_id_tab1"] = uuid.uuid4().hex
+                    relevant_docs = similar_doc(job_description, document_count, "56ea0e97-0ca4-4db7-b74c-4e60dd726bf5",
+                                                "gcp-starter", "resumeanalyser", embeddings, st.session_state["unique_id_tab1"], docs)
                 # st.write(relevant_docs)
 
-                for doc in relevant_docs:
-                    content = doc[0]
-                    score = doc[1]
-                    score = score * 100
-                    with st.expander("Show Score:-", expanded=True):
-                        st.info("**match score** :" + str(score)+"%")
-                        summary = get_summary(doc[0])
-                        st.write(summary)
+                    for doc in relevant_docs:
+                        content = doc[0]
+                        score = doc[1]
+                        score = score * 100
+                        with st.expander("Show Score:-", expanded=True):
+                            st.info("**match score** :" + str(score)+"%")
+                            summary = get_summary(doc[0])
+                            st.write(summary)
 
             st.success("Hope it was helpful.")
 
