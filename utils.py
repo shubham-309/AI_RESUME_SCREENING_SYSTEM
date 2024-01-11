@@ -72,3 +72,9 @@ def similar_doc(query, k, pinecone_apikey, pinecone_environment, pinecone_index_
     docsearch = Pinecone.from_existing_index(pinecone_index_name, embedding)
     similar_docs = docsearch.similarity_search_with_score(query, k=int(k))
     return similar_docs
+
+def null_vector(api_key, environment, indexname ):
+    pinecone.init(api_key=api_key, environment=environment) 
+    index = pinecone.Index(index_name=indexname) 
+    index_stats_response = index.describe_index_stats()
+    return index_stats_response.get('total_vector_count')
